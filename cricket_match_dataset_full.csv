@@ -1,0 +1,31 @@
+Team1,Team2,TossWinner,TossDecision,Team1Score,Team2Score,Overs,Wickets,Winner
+India,Australia,India,Bat,185,170,20,6,Team1
+Australia,India,Australia,Field,160,175,20,7,Team2
+England,India,India,Field,172,160,20,5,Team1
+India,England,India,Bat,195,180,20,4,Team1
+Pakistan,Australia,Pakistan,Field,148,155,20,8,Team1
+Australia,England,Australia,Bat,178,165,20,6,Team1
+England,India,England,Field,165,172,20,5,Team2
+India,South Africa,India,Bat,201,178,20,3,Team1
+South Africa,India,South Africa,Field,154,160,20,7,Team2
+New Zealand,Pakistan,New Zealand,Bat,181,170,20,5,Team1
+India,New Zealand,India,Field,192,180,20,4,Team1
+Australia,India,Australia,Bat,170,168,20,6,Team1
+Pakistan,England,Pakistan,Field,156,149,20,7,Team1
+England,Australia,England,Bat,188,170,20,5,Team1
+India,Pakistan,India,Field,205,190,20,3,Team1
+Sri Lanka,India,Sri Lanka,Bat,149,152,20,8,Team2
+Australia,New Zealand,Australia,Field,177,165,20,6,Team1
+New Zealand,India,New Zealand,Bat,163,170,20,7,Team2
+India,Australia,India,Field,198,182,20,4,Team1
+England,Pakistan,England,Bat,151,160,20,8,Team2
+Pakistan,India,Pakistan,Field,145,150,20,7,Team1
+South Africa,England,South Africa,Bat,168,162,20,6,Team1
+India,Sri Lanka,India,Field,190,175,20,5,Team1
+Australia,South Africa,Australia,Bat,175,168,20,7,Team1
+England,New Zealand,England,Field,158,155,20,8,Team2
+New Zealand,Australia,New Zealand,Bat,186,172,20,5,Team1
+India,England,India,Field,203,190,20,3,Team1
+Pakistan,South Africa,Pakistan,Bat,147,160,20,9,Team2
+Australia,India,Australia,Field,179,170,20,6,Team1
+South Africa,Pakistan,South Africa,Bat,161,150,20,8,Team1

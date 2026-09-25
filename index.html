@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Cricket Match Win Predictor</title>
+
+
+<style>
+
+/* =====================================================
+   GENERAL
+===================================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+body {
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a,
+            #111827,
+            #172033
+        );
+
+    min-height: 100vh;
+
+    color: white;
+
+    padding: 25px;
+}
+
+
+/* =====================================================
+   MAIN CONTAINER
+===================================================== */
+
+.container {
+
+    width: 100%;
+
+    max-width: 900px;
+
+    margin: auto;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header {
+
+    text-align: center;
+
+    margin-bottom: 25px;
+}
+
+
+.header h1 {
+
+    font-size: 38px;
+
+    color: #38bdf8;
+
+    margin-bottom: 10px;
+}
+
+
+.header p {
+
+    color: #94a3b8;
+
+    font-size: 16px;
+}
+
+
+/* =====================================================
+   CARD
+===================================================== */
+
+.card {
+
+    background: rgba(
+        30,
+        41,
+        59,
+        0.95
+    );
+
+    border:
+
+        1px solid
+        #334155;
+
+    border-radius: 20px;
+
+    padding: 30px;
+
+    box-shadow:
+
+        0 20px 50px
+        rgba(0, 0, 0, 0.4);
+}
+
+
+/* =====================================================
+   FORM GRID
+===================================================== */
+
+.form-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 20px;
+}
+
+
+.form-group {
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.form-group.full {
+
+    grid-column:
+        1 / -1;
+}
+
+
+/* =====================================================
+   LABEL
+===================================================== */
+
+label {
+
+    color: #cbd5e1;
+
+    font-size: 14px;
+
+    margin-bottom: 8px;
+
+    font-weight: bold;
+}
+
+
+/* =====================================================
+   INPUT / SELECT
+===================================================== */
+
+input,
+select {
+
+    width: 100%;
+
+    padding: 13px 14px;
+
+    border-radius: 10px;
+
+    border:
+        1px solid
+        #475569;
+
+    background:
+        #0f172a;
+
+    color: white;
+
+    font-size: 15px;
+
+    outline: none;
+
+    transition: 0.2s;
+}
+
+
+input:focus,
+select:focus {
+
+    border-color:
+        #38bdf8;
+
+    box-shadow:
+        0 0 0 2px
+        rgba(56, 189, 248, 0.15);
+}
+
+
+/* =====================================================
+   BUTTON
+===================================================== */
+
+.predict-button {
+
+    width: 100%;
+
+    margin-top: 25px;
+
+    padding: 15px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #0284c7,
+            #38bdf8
+        );
+
+    color: white;
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.predict-button:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(56, 189, 248, 0.25);
+}
+
+
+.predict-button:disabled {
+
+    opacity: 0.6;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.loading {
+
+    display: none;
+
+    text-align: center;
+
+    margin-top: 20px;
+
+    color: #38bdf8;
+}
+
+
+/* =====================================================
+   RESULT
+===================================================== */
+
+.result {
+
+    display: none;
+
+    margin-top: 25px;
+
+    background:
+        #0f172a;
+
+    border:
+        1px solid
+        #334155;
+
+    border-radius: 15px;
+
+    padding: 25px;
+
+    text-align: center;
+}
+
+
+.result-title {
+
+    color: #94a3b8;
+
+    font-size: 15px;
+
+    margin-bottom: 10px;
+}
+
+
+.winner {
+
+    font-size: 30px;
+
+    font-weight: bold;
+
+    color: #38bdf8;
+
+    margin-bottom: 20px;
+}
+
+
+/* =====================================================
+   PROBABILITY
+===================================================== */
+
+.probability-container {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 15px;
+}
+
+
+.probability {
+
+    background:
+        #1e293b;
+
+    border-radius: 10px;
+
+    padding: 15px;
+}
+
+
+.probability-name {
+
+    color: #94a3b8;
+
+    margin-bottom: 5px;
+}
+
+
+.probability-value {
+
+    color: white;
+
+    font-size: 22px;
+
+    font-weight: bold;
+}
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+.error {
+
+    display: none;
+
+    margin-top: 20px;
+
+    padding: 13px;
+
+    background:
+        rgba(239, 68, 68, 0.1);
+
+    border:
+        1px solid
+        #ef4444;
+
+    border-radius: 8px;
+
+    color: #fca5a5;
+
+    text-align: center;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer {
+
+    text-align: center;
+
+    margin-top: 20px;
+
+    color: #64748b;
+
+    font-size: 13px;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 700px) {
+
+    body {
+
+        padding: 15px;
+    }
+
+
+    .header h1 {
+
+        font-size: 28px;
+    }
+
+
+    .card {
+
+        padding: 20px;
+    }
+
+
+    .form-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .form-group.full {
+
+        grid-column: auto;
+    }
+
+
+    .probability-container {
+
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<!-- ==================================================
+     HEADER
+================================================== -->
+
+<div class="header">
+
+    <h1>
+         Cricket Match Win Predictor
+    </h1>
+
+    <p>
+        Machine Learning Based Match Prediction
+    </p>
+
+</div>
+
+
+<!-- ==================================================
+     FORM CARD
+================================================== -->
+
+<div class="card">
+
+
+<form id="predictionForm">
+
+
+<div class="form-grid">
+
+
+<!-- TEAM 1 -->
+
+<div class="form-group">
+
+<label>
+    Team 1
+</label>
+
+<select id="Team1"
+        name="Team1"
+        required>
+
+<option value="">
+    Loading teams...
+</option>
+
+</select>
+
+</div>
+
+
+<!-- TEAM 2 -->
+
+<div class="form-group">
+
+<label>
+    Team 2
+</label>
+
+<select id="Team2"
+        name="Team2"
+        required>
+
+<option value="">
+    Loading teams...
+</option>
+
+</select>
+
+</div>
+
+
+<!-- TOSS WINNER -->
+
+<div class="form-group">
+
+<label>
+    Toss Winner
+</label>
+
+<select id="TossWinner"
+        name="TossWinner"
+        required>
+
+<option value="">
+    Select teams first
+</option>
+
+</select>
+
+</div>
+
+
+<!-- TOSS DECISION -->
+
+<div class="form-group">
+
+<label>
+    Toss Decision
+</label>
+
+<select id="TossDecision"
+        name="TossDecision"
+        required>
+
+<option value="Bat">
+    Bat
+</option>
+
+<option value="Field">
+    Field
+</option>
+
+</select>
+
+</div>
+
+
+<!-- TEAM 1 SCORE -->
+
+<div class="form-group">
+
+<label>
+    Team 1 Score
+</label>
+
+<input
+    type="number"
+    id="Team1Score"
+    name="Team1Score"
+    min="0"
+    placeholder="Example: 185"
+    required
+>
+
+</div>
+
+
+<!-- TEAM 2 SCORE -->
+
+<div class="form-group">
+
+<label>
+    Team 2 Score
+</label>
+
+<input
+    type="number"
+    id="Team2Score"
+    name="Team2Score"
+    min="0"
+    placeholder="Example: 170"
+    required
+>
+
+</div>
+
+
+<!-- OVERS -->
+
+<div class="form-group">
+
+<label>
+    Overs
+</label>
+
+<input
+    type="number"
+    id="Overs"
+    name="Overs"
+    min="0.1"
+    max="50"
+    step="0.1"
+    placeholder="Example: 20"
+    required
+>
+
+</div>
+
+
+<!-- WICKETS -->
+
+<div class="form-group">
+
+<label>
+    Wickets
+</label>
+
+<input
+    type="number"
+    id="Wickets"
+    name="Wickets"
+    min="0"
+    max="10"
+    placeholder="Example: 5"
+    required
+>
+
+</div>
+
+
+</div>
+
+
+<!-- BUTTON -->
+
+<button
+    type="submit"
+    id="predictButton"
+    class="predict-button">
+
+    Predict Match Winner
+
+</button>
+
+
+</form>
+
+
+<!-- LOADING -->
+
+<div
+    id="loading"
+    class="loading">
+
+    Predicting match result...
+
+</div>
+
+
+<!-- ERROR -->
+
+<div
+    id="error"
+    class="error">
+</div>
+
+
+<!-- ==================================================
+     RESULT
+================================================== -->
+
+<div
+    id="result"
+    class="result">
+
+
+<div class="result-title">
+
+    Predicted Match Winner
+
+</div>
+
+
+<div
+    id="winner"
+    class="winner">
+
+</div>
+
+
+<div
+    id="probabilityContainer"
+    class="probability-container">
+
+
+<div class="probability">
+
+<div
+    id="team1Name"
+    class="probability-name">
+
+</div>
+
+<div
+    id="team1Probability"
+    class="probability-value">
+
+    --
+
+</div>
+
+</div>
+
+
+<div class="probability">
+
+<div
+    id="team2Name"
+    class="probability-name">
+
+</div>
+
+<div
+    id="team2Probability"
+    class="probability-value">
+
+    --
+
+</div>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<div class="footer">
+
+    Cricket Match Win Predictor • Machine Learning Project
+
+</div>
+
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const team1 =
+    document.getElementById("Team1");
+
+const team2 =
+    document.getElementById("Team2");
+
+const tossWinner =
+    document.getElementById("TossWinner");
+
+const form =
+    document.getElementById("predictionForm");
+
+const button =
+    document.getElementById("predictButton");
+
+const loading =
+    document.getElementById("loading");
+
+const result =
+    document.getElementById("result");
+
+const errorBox =
+    document.getElementById("error");
+
+
+/* =====================================================
+   LOAD TEAMS
+===================================================== */
+
+async function loadTeams() {
+
+    try {
+
+        const response =
+            await fetch("/teams");
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "Unable to load teams."
+            );
+
+        }
+
+
+        team1.innerHTML = "";
+        team2.innerHTML = "";
+
+
+        data.teams.forEach(
+            function(team) {
+
+                const option1 =
+                    document.createElement(
+                        "option"
+                    );
+
+                option1.value = team;
+
+                option1.textContent = team;
+
+
+                const option2 =
+                    document.createElement(
+                        "option"
+                    );
+
+                option2.value = team;
+
+                option2.textContent = team;
+
+
+                team1.appendChild(
+                    option1
+                );
+
+                team2.appendChild(
+                    option2
+                );
+
+            }
+        );
+
+
+        // Select different teams initially
+
+        if (data.teams.length >= 2) {
+
+            team1.value =
+                data.teams[0];
+
+            team2.value =
+                data.teams[1];
+
+        }
+
+
+        updateTossWinner();
+
+
+    }
+
+    catch (error) {
+
+        showError(
+            "Could not load team names: "
+            + error.message
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   UPDATE TOSS WINNER
+===================================================== */
+
+function updateTossWinner() {
+
+    tossWinner.innerHTML = "";
+
+
+    const option1 =
+        document.createElement(
+            "option"
+        );
+
+    option1.value =
+        team1.value;
+
+    option1.textContent =
+        team1.value;
+
+
+    const option2 =
+        document.createElement(
+            "option"
+        );
+
+    option2.value =
+        team2.value;
+
+    option2.textContent =
+        team2.value;
+
+
+    tossWinner.appendChild(
+        option1
+    );
+
+    tossWinner.appendChild(
+        option2
+    );
+
+}
+
+
+/* =====================================================
+   TEAM CHANGE EVENTS
+===================================================== */
+
+team1.addEventListener(
+    "change",
+    updateTossWinner
+);
+
+
+team2.addEventListener(
+    "change",
+    updateTossWinner
+);
+
+
+/* =====================================================
+   SHOW ERROR
+===================================================== */
+
+function showError(message) {
+
+    errorBox.textContent =
+        message;
+
+    errorBox.style.display =
+        "block";
+
+}
+
+
+/* =====================================================
+   HIDE ERROR
+===================================================== */
+
+function hideError() {
+
+    errorBox.style.display =
+        "none";
+
+}
+
+
+/* =====================================================
+   FORM SUBMISSION
+===================================================== */
+
+form.addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+        hideError();
+
+        result.style.display =
+            "none";
+
+        loading.style.display =
+            "block";
+
+        button.disabled =
+            true;
+
+
+        const data = {
+
+            Team1:
+                team1.value,
+
+            Team2:
+                team2.value,
+
+            TossWinner:
+                tossWinner.value,
+
+            TossDecision:
+                document.getElementById(
+                    "TossDecision"
+                ).value,
+
+            Team1Score:
+                document.getElementById(
+                    "Team1Score"
+                ).value,
+
+            Team2Score:
+                document.getElementById(
+                    "Team2Score"
+                ).value,
+
+            Overs:
+                document.getElementById(
+                    "Overs"
+                ).value,
+
+            Wickets:
+                document.getElementById(
+                    "Wickets"
+                ).value
+
+        };
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/predict",
+                    {
+
+                        method: "POST",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json"
+
+                        },
+
+                        body:
+                            JSON.stringify(data)
+
+                    }
+                );
+
+
+            const prediction =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    prediction.error ||
+                    "Prediction failed."
+                );
+
+            }
+
+
+            // Show winner
+
+            document.getElementById(
+                "winner"
+            ).textContent =
+                prediction.winner;
+
+
+            // Team names
+
+            document.getElementById(
+                "team1Name"
+            ).textContent =
+                prediction.team1;
+
+
+            document.getElementById(
+                "team2Name"
+            ).textContent =
+                prediction.team2;
+
+
+            // Probabilities
+
+            if (
+                prediction.team1_probability
+                !== undefined
+            ) {
+
+                document.getElementById(
+                    "team1Probability"
+                ).textContent =
+                    prediction.team1_probability
+                    + "%";
+
+
+                document.getElementById(
+                    "team2Probability"
+                ).textContent =
+                    prediction.team2_probability
+                    + "%";
+
+            }
+
+            else {
+
+                document.getElementById(
+                    "team1Probability"
+                ).textContent =
+                    "N/A";
+
+
+                document.getElementById(
+                    "team2Probability"
+                ).textContent =
+                    "N/A";
+
+            }
+
+
+            result.style.display =
+                "block";
+
+        }
+
+        catch (error) {
+
+            showError(
+                error.message
+            );
+
+        }
+
+        finally {
+
+            loading.style.display =
+                "none";
+
+            button.disabled =
+                false;
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadTeams();
+
+</script>
+
+
+</body>
+
+</html>
